@@ -40,8 +40,9 @@ where I: Iterator, I: Clone, I::Item: Clone {
         }
 
         let res = self.items.iter().map(|(_, v)| v.clone()).collect();
+        let n = self.items.len();
 
-        if self.items.is_empty() {
+        if n == 0 {
             self.finished = true;
         } else {
             /*
@@ -49,10 +50,10 @@ where I: Iterator, I: Clone, I::Item: Clone {
              * clones of the iterator and checks the index == 0 potentially
              * multiple times.
 
-            'outer: for index in (0..self.items.len()).rev() {
+            'outer: for index in (0..n).rev() {
                 let mut iter = self.items[index].0.clone();
 
-                for tail_index in index..self.items.len() {
+                for item in &mut self.items[index..n] {
                     let Some(value) = iter.next() else {
                         if index == 0 {
                             self.finished = true;
@@ -60,26 +61,26 @@ where I: Iterator, I: Clone, I::Item: Clone {
                         }
                         continue 'outer;
                     };
-                    self.items[tail_index] = (iter.clone(), value);
+                    *item = (iter.clone(), value);
                 }
 
                 break;
             }
              */
 
-            'outer: for index in (1..self.items.len()).rev() {
+            'outer: for index in (1..n).rev() {
                 let mut iter = self.items[index].0.clone();
 
-                for tail_index in index..(self.items.len() - 1) {
+                for item in &mut self.items[index..n - 1] {
                     let Some(value) = iter.next() else {
                         continue 'outer;
                     };
-                    self.items[tail_index] = (iter.clone(), value);
+                    *item = (iter.clone(), value);
                 }
 
                 if let Some(value) = iter.next() {
                     // eliminate one unnecessary clone
-                    *self.items.last_mut().unwrap() = (iter, value);
+                    self.items[n - 1] = (iter, value);
                 } else {
                     continue 'outer;
                 }
@@ -89,17 +90,17 @@ where I: Iterator, I: Clone, I::Item: Clone {
 
             let mut iter = self.items[0].0.clone();
 
-            for tail_index in 0..(self.items.len() - 1) {
+            for item in &mut self.items[0..n - 1] {
                 let Some(value) = iter.next() else {
                     self.finished = true;
                     break;
                 };
-                self.items[tail_index] = (iter.clone(), value);
+                *item = (iter.clone(), value);
             }
 
             if let Some(value) = iter.next() {
                 // eliminate one unnecessary clone
-                *self.items.last_mut().unwrap() = (iter, value);
+                self.items[n - 1] = (iter, value);
             } else {
                 self.finished = true;
             }
