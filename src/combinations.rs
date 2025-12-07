@@ -50,10 +50,6 @@ where I: Iterator, I: Clone, I::Item: Clone {
 
                 for tail_index in index..self.items.len() {
                     let Some(value) = iter.next() else {
-                        if index == 0 {
-                            self.finished = true;
-                            break;
-                        }
                         continue 'outer;
                     };
                     self.items[tail_index] = (iter.clone(), value);
