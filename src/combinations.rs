@@ -15,7 +15,7 @@ where I: Iterator, I: Clone {
             let Some(value) = iter.next() else {
                 return Self {
                     items: vec![],
-                    finished: true,
+                    finished: false,
                 };
             };
             items.push((iter.clone(), value));
@@ -23,7 +23,7 @@ where I: Iterator, I: Clone {
 
         Self {
             items,
-            finished: r == 0,
+            finished: false,
         }
     }
 }
@@ -41,21 +41,35 @@ where I: Iterator, I: Clone, I::Item: Clone {
 
         let res = self.items.iter().map(|(_, v)| v.clone()).collect();
 
-        'outer: for index in (0..self.items.len()).rev() {
-            // TODO: optimize clones!
-            let mut iter = self.items[index].0.clone();
+        if self.items.is_empty() {
+            self.finished = true;
+        } else {
+            'outer: for index in (1..self.items.len()).rev() {
+                // TODO: optimize clones!
+                let mut iter = self.items[index].0.clone();
 
-            for tail_index in index..self.items.len() {
+                for tail_index in index..self.items.len() {
+                    let Some(value) = iter.next() else {
+                        if index == 0 {
+                            self.finished = true;
+                            break;
+                        }
+                        continue 'outer;
+                    };
+                    self.items[tail_index] = (iter.clone(), value);
+                }
+                return Some(res);
+            }
+
+            let mut iter = self.items[0].0.clone();
+
+            for tail_index in 0..self.items.len() {
                 let Some(value) = iter.next() else {
-                    if index == 0 {
-                        self.finished = true;
-                        break;
-                    }
-                    continue 'outer;
+                    self.finished = true;
+                    break;
                 };
                 self.items[tail_index] = (iter.clone(), value);
             }
-            break;
         }
 
         Some(res)

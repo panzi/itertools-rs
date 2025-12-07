@@ -3,7 +3,7 @@ use itertools::combinations;
 #[test]
 fn test_combinations0() {
     let values = "0123456789";
-    let expected: Vec<String> = Vec::new();
+    let expected: Vec<String> = vec!["".to_string()];
     let actual = combinations(values.chars(), 0).map(
         |v| v.iter().collect::<String>()
     ).collect::<Vec<_>>();
