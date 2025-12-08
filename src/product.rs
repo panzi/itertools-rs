@@ -1,5 +1,6 @@
 use std::iter::Iterator;
 
+#[derive(Debug)]
 pub struct Product<F, S>
 where F: Iterator {
     first: F,
@@ -52,6 +53,15 @@ where F: Iterator, F::Item: Clone, S: Iterator, S: Clone {
         };
 
         return (lower, upper);
+    }
+
+    fn count(self) -> usize
+    where Self: Sized, {
+        let first_count = self.first.count();
+        let second_count = self.second.count();
+        let second_clone_count = self.second_clone.count();
+
+        second_count + first_count * second_clone_count
     }
 
     fn next(&mut self) -> Option<Self::Item> {

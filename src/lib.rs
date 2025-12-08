@@ -6,3 +6,6 @@ pub use combinations::*;
 
 pub mod powerset;
 pub use powerset::*;
+
+pub mod permutations;
+pub use permutations::*;

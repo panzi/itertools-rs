@@ -28,6 +28,17 @@ where I: Iterator, I: Clone {
     }
 }
 
+impl<I> Clone for Combinations<I>
+where I: Iterator, I: Clone, I::Item: Clone {
+    #[inline]
+    fn clone(&self) -> Self {
+        Self {
+            items: self.items.clone(),
+            finished: self.finished,
+        }
+    }
+}
+
 impl<I> Iterator for Combinations<I>
 where I: Iterator, I: Clone, I::Item: Clone {
     type Item = Vec<I::Item>;
