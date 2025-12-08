@@ -66,3 +66,14 @@ fn test_combinations3() {
 
     assert_eq!(expected.as_slice(), actual.as_slice());
 }
+
+#[test]
+fn test_combinations11() {
+    let values = "0123456789";
+    let expected: Vec<String> = Vec::new();
+    let actual = combinations(values.chars(), 11).map(
+        |v| v.iter().collect::<String>()
+    ).collect::<Vec<_>>();
+
+    assert_eq!(expected, actual);
+}

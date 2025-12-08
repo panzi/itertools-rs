@@ -55,8 +55,7 @@ where F: Iterator, F::Item: Clone, S: Iterator, S: Clone {
         return (lower, upper);
     }
 
-    fn count(self) -> usize
-    where Self: Sized, {
+    fn count(self) -> usize {
         let first_count = self.first.count();
         let second_count = self.second.count();
         let second_clone_count = self.second_clone.count();

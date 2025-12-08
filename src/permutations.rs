@@ -15,6 +15,7 @@ pub struct Permutations<'a, T> {
 }
 
 impl<'a, T> Permutations<'a, T> {
+    #[inline]
     pub fn new(data: &'a [T]) -> Self {
         Self {
             data,
