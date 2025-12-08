@@ -1,5 +1,6 @@
 // TODO: How to do this returning &[I::Item] instead of Vec<I::Item>?
 
+#[derive(Debug)]
 pub struct Combinations<I>
 where I: Iterator {
     items: Vec<(I, I::Item)>,
@@ -15,7 +16,7 @@ where I: Iterator, I: Clone {
             let Some(value) = iter.next() else {
                 return Self {
                     items: vec![],
-                    finished: false,
+                    finished: true,
                 };
             };
             items.push((iter.clone(), value));
