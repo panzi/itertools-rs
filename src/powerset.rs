@@ -64,3 +64,13 @@ pub fn powerset<I>(iter: I) -> Powerset<I>
 where I: Iterator, I: Clone {
     Powerset::new(iter)
 }
+
+pub trait Powersetable: Iterator
+where Self: Sized + Clone {
+    #[inline]
+    fn powerset(self) -> Powerset<Self> {
+        Powerset::new(self)
+    }
+}
+
+impl<I> Powersetable for I where I: Iterator + Clone {}

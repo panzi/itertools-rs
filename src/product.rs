@@ -39,6 +39,7 @@ impl<F, S> Iterator for Product<F, S>
 where F: Iterator, F::Item: Clone, S: Iterator, S: Clone {
     type Item = (F::Item, S::Item);
 
+    /* FIXME and test
     fn size_hint(&self) -> (usize, Option<usize>) {
         let (first_lower, first_upper) = self.first.size_hint();
         let (second_lower, second_upper) = self.second.size_hint();
@@ -54,13 +55,19 @@ where F: Iterator, F::Item: Clone, S: Iterator, S: Clone {
 
         return (lower, upper);
     }
+     */
 
     fn count(self) -> usize {
         let first_count = self.first.count();
         let second_count = self.second.count();
-        let second_clone_count = self.second_clone.count();
 
-        second_count + first_count * second_clone_count
+        if self.first_current.is_some() {
+            let second_clone_count = self.second_clone.count();
+
+            second_count + first_count * second_clone_count
+        } else {
+            first_count * second_count
+        }
     }
 
     fn next(&mut self) -> Option<Self::Item> {

@@ -9,3 +9,6 @@ pub use powerset::*;
 
 pub mod permutations;
 pub use permutations::*;
+
+pub mod pairwise;
+pub use pairwise::*;

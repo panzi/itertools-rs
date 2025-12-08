@@ -1,5 +1,3 @@
-// TODO: How to do this returning &[I::Item] instead of Vec<I::Item>?
-
 #[derive(Debug)]
 pub struct Combinations<I>
 where I: Iterator {
@@ -42,6 +40,7 @@ where I: Iterator, I: Clone, I::Item: Clone {
 
 impl<I> Iterator for Combinations<I>
 where I: Iterator, I: Clone, I::Item: Clone {
+    // TODO: How to do this returning &[I::Item] instead of Vec<I::Item>?
     type Item = Vec<I::Item>;
 
     // TODO: Is there a way to calculate size_hint()?
@@ -127,3 +126,13 @@ pub fn combinations<I>(iter: I, r: usize) -> Combinations<I>
 where I: Iterator, I: Clone {
     Combinations::new(iter, r)
 }
+
+pub trait Combinable: Iterator
+where Self: Sized + Clone {
+    #[inline]
+    fn combinations(self, r: usize) -> Combinations<Self> {
+        Combinations::new(self, r)
+    }
+}
+
+impl<I> Combinable for I where I: Iterator + Clone {}

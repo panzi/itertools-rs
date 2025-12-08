@@ -25,6 +25,13 @@ fn test_product() {
         product(first.iter().cloned(), second.iter().cloned()).collect::<Vec<_>>(),
         expected
     );
+    assert_eq!(
+        product(first.iter().cloned(), second.iter().cloned()).count(),
+        expected.len()
+    );
+    let mut iter = product(first.iter().cloned(), second.iter().cloned());
+    iter.next();
+    assert_eq!(iter.count(), expected.len() - 1);
 }
 
 #[test]
@@ -37,6 +44,13 @@ fn test_product_first_empty() {
         product(first.iter().cloned(), second.iter().cloned()).collect::<Vec<_>>(),
         expected
     );
+    assert_eq!(
+        product(first.iter().cloned(), second.iter().cloned()).count(),
+        expected.len()
+    );
+    let mut iter = product(first.iter().cloned(), second.iter().cloned());
+    iter.next();
+    assert_eq!(iter.count(), 0);
 }
 
 #[test]
@@ -49,6 +63,13 @@ fn test_product_second_empty() {
         product(first.iter().cloned(), second.iter().cloned()).collect::<Vec<_>>(),
         expected
     );
+    assert_eq!(
+        product(first.iter().cloned(), second.iter().cloned()).count(),
+        expected.len()
+    );
+    let mut iter = product(first.iter().cloned(), second.iter().cloned());
+    iter.next();
+    assert_eq!(iter.count(), 0);
 }
 
 #[test]
@@ -61,6 +82,13 @@ fn test_product_both_empty() {
         product(first.iter().cloned(), second.iter().cloned()).collect::<Vec<_>>(),
         expected
     );
+    assert_eq!(
+        product(first.iter().cloned(), second.iter().cloned()).count(),
+        expected.len()
+    );
+    let mut iter = product(first.iter().cloned(), second.iter().cloned());
+    iter.next();
+    assert_eq!(iter.count(), 0);
 }
 
 #[test]
@@ -84,4 +112,11 @@ fn test_product4() {
         product4(v1.into_iter(), v2.into_iter(), v3.into_iter(), v4.into_iter()).collect::<Vec<_>>(),
         expected
     );
+    assert_eq!(
+        product4(v1.into_iter(), v2.into_iter(), v3.into_iter(), v4.into_iter()).count(),
+        expected.len()
+    );
+    let mut iter = product4(v1.into_iter(), v2.into_iter(), v3.into_iter(), v4.into_iter());
+    iter.next();
+    assert_eq!(iter.count(), expected.len() - 1);
 }

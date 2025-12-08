@@ -1,4 +1,4 @@
-use itertools::combinations;
+use itertools::{Combinable, combinations};
 
 #[test]
 fn test_combinations0() {
@@ -36,7 +36,7 @@ fn test_combinations2() {
         "78", "79",
         "89",
     ].map(String::from);
-    let actual = combinations(values.chars(), 2).map(
+    let actual = values.chars().combinations(2).map(
         |v| v.iter().collect::<String>()
     ).collect::<Vec<_>>();
 

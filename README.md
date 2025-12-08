@@ -2,5 +2,6 @@
 
 * [x] product
 * [x] combinations
-* [ ] permutations
-* [ ] powerset
+* [x] permutations
+* [x] powerset
+* [x] pairwise

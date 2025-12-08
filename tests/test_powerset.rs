@@ -1,4 +1,4 @@
-use itertools::powerset;
+use itertools::{Powersetable, powerset};
 
 #[test]
 fn test_powerset0() {
@@ -15,7 +15,7 @@ fn test_powerset0() {
 fn test_powerset1() {
     let values = "a";
     let expected = ["", "a"].map(str::to_string);
-    let actual: Vec<String> = powerset(values.chars()).map(
+    let actual: Vec<String> = values.chars().powerset().map(
         |item| item.into_iter().collect()
     ).collect();
 

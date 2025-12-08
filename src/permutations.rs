@@ -80,3 +80,26 @@ impl<'a, T> Iterator for Permutations<'a, T> {
 pub fn permutations<'a, T>(data: &'a [T]) -> Permutations<'a, T> {
     Permutations::new(data)
 }
+
+pub trait Permutable<'a> {
+    type Item;
+    fn permutations(&'a self) -> Permutations<'a, Self::Item>;
+}
+
+impl<'a, T> Permutable<'a> for [T] {
+    type Item = T;
+
+    #[inline]
+    fn permutations(&'a self) -> Permutations<'a, Self::Item> {
+        Permutations::new(self)
+    }
+}
+
+impl<'a, T, const N: usize> Permutable<'a> for [T; N] {
+    type Item = T;
+
+    #[inline]
+    fn permutations(&'a self) -> Permutations<'a, Self::Item> {
+        Permutations::new(self.as_slice())
+    }
+}

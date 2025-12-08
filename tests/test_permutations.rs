@@ -1,9 +1,10 @@
-use itertools::permutations;
+use itertools::{permutations, Permutable};
 
 #[test]
 fn test_permutations0() {
+    let values = [0; 0];
     let expected: Vec<Vec<&u32>> = vec![Vec::new()];
-    let actual: Vec<Vec<&u32>> = permutations(&[]).collect();
+    let actual: Vec<Vec<&u32>> = values.permutations().collect();
 
     assert_eq!(&expected[..], &actual[..]);
 }
@@ -12,7 +13,7 @@ fn test_permutations0() {
 fn test_permutations1() {
     let values = [0];
     let expected: Vec<Vec<&u32>> = vec![values.iter().collect()];
-    let actual: Vec<Vec<&u32>> = permutations(&values).collect();
+    let actual: Vec<Vec<&u32>> = values.as_slice().permutations().collect();
 
     assert_eq!(&expected[..], &actual[..]);
 }
