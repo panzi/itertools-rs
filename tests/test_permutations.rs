@@ -7,6 +7,8 @@ fn test_permutations0() {
     let actual: Vec<Vec<&u32>> = values.permutations().collect();
 
     assert_eq!(&expected[..], &actual[..]);
+    assert_eq!(values.permutations().count(), expected.len());
+    assert_eq!(values.as_slice().permutations().size_hint(), (expected.len(), Some(expected.len())));
 }
 
 #[test]
@@ -16,6 +18,8 @@ fn test_permutations1() {
     let actual: Vec<Vec<&u32>> = values.as_slice().permutations().collect();
 
     assert_eq!(&expected[..], &actual[..]);
+    assert_eq!(values.as_slice().permutations().count(), expected.len());
+    assert_eq!(values.as_slice().permutations().size_hint(), (expected.len(), Some(expected.len())));
 }
 
 #[test]
@@ -47,4 +51,15 @@ fn test_permutations5() {
     actual.sort();
 
     assert_eq!(&expected[..], &actual[..]);
+
+    for n in 0..expected.len() {
+        let iter = permutations(&values);
+        let iter = iter.skip(n);
+        assert_eq!(iter.count(), expected.len() - n);
+
+        let iter = permutations(&values);
+        let iter = iter.skip(n);
+        let upper = expected.len() - n;
+        assert_eq!(iter.size_hint(), (upper, Some(upper)));
+    }
 }
