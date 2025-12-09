@@ -1,3 +1,4 @@
+#[derive(Debug)]
 pub struct ZipLongest<F, S> {
     first: F,
     second: S,
@@ -38,6 +39,7 @@ where F: Iterator, S: Iterator,
         (lower, upper)
     }
 
+    #[inline]
     fn count(self) -> usize {
         self.first.count().max(self.second.count())
     }

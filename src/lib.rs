@@ -15,3 +15,6 @@ pub use pairwise::*;
 
 pub mod zip_longest;
 pub use zip_longest::*;
+
+pub mod accumulate;
+pub use accumulate::*;
