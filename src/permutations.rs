@@ -31,7 +31,7 @@ impl<'a, T> Iterator for Permutations<'a, T> {
     type Item = Vec<&'a T>;
 
     // fn size_hint(&self) -> (usize, Option<usize>) {
-    //     // this is all, but what is just remaining?
+    //     // this is for all elements, but what is just remaining?
     //     let size = (1..=self.data.len()).product();
     // }
 

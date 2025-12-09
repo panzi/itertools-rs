@@ -1,4 +1,4 @@
-use itertools::{product, product4};
+use itertools::{product, product4, Productable};
 
 #[test]
 fn test_product() {
@@ -29,9 +29,17 @@ fn test_product() {
         product(first.iter().cloned(), second.iter().cloned()).count(),
         expected.len()
     );
-    let mut iter = product(first.iter().cloned(), second.iter().cloned());
-    iter.next();
-    assert_eq!(iter.count(), expected.len() - 1);
+
+    for n in 0..expected.len() {
+        let iter = product(first.iter().cloned(), second.iter().cloned());
+        let iter = iter.skip(n);
+        assert_eq!(iter.count(), expected.len() - n);
+
+        let iter = product(first.iter().cloned(), second.iter().cloned());
+        let iter = iter.skip(n);
+        let upper = expected.len() - n;
+        assert_eq!(iter.size_hint(), (upper, Some(upper)));
+    }
 }
 
 #[test]
@@ -79,7 +87,7 @@ fn test_product_both_empty() {
     let expected = vec![];
 
     assert_eq!(
-        product(first.iter().cloned(), second.iter().cloned()).collect::<Vec<_>>(),
+        first.iter().cloned().product2(second.iter().cloned()).collect::<Vec<_>>(),
         expected
     );
     assert_eq!(
