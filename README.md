@@ -5,3 +5,5 @@
 * [x] permutations
 * [x] powerset
 * [x] pairwise
+* [x] zip_longest
+* [ ] accumulate

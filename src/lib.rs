@@ -12,3 +12,6 @@ pub use permutations::*;
 
 pub mod pairwise;
 pub use pairwise::*;
+
+pub mod zip_longest;
+pub use zip_longest::*;
