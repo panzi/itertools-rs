@@ -6,4 +6,5 @@
 * [x] powerset
 * [x] pairwise
 * [x] zip_longest
-* [ ] accumulate
+* [x] accumulate
+* [ ] group_by?
