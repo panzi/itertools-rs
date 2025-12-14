@@ -73,10 +73,12 @@ where F: Iterator, F::Item: Clone, S: Iterator, S: Clone {
         if self.first_current.is_some() {
             let second_clone_count = self.second_clone.count();
 
-            second_count + first_count * second_clone_count
+            first_count
+                .checked_mul(second_clone_count)
+                .and_then(|val| val.checked_add(second_count))
         } else {
-            first_count * second_count
-        }
+            first_count.checked_mul(second_count)
+        }.expect("usize overflow")
     }
 
     fn next(&mut self) -> Option<Self::Item> {
