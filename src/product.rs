@@ -45,17 +45,21 @@ where F: Iterator, F::Item: Clone, S: Iterator, S: Clone {
 
         if self.first_current.is_some() {
             let (second_clone_lower, second_clone_upper) = self.second_clone.size_hint();
-            let lower = second_lower + first_lower * second_clone_lower;
+            let lower = second_lower.saturating_add(first_lower.saturating_mul(second_clone_lower));
             let upper = match (first_upper, second_upper, second_clone_upper) {
-                (Some(first_upper), Some(second_upper), Some(second_clone_upper)) =>
-                    Some(second_upper + first_upper * second_clone_upper),
+                (Some(first_upper), Some(second_upper), Some(second_clone_upper)) => {
+                    first_upper
+                        .checked_mul(second_clone_upper)
+                        .and_then(|val| val.checked_add(second_upper))
+                },
                 _ => None,
             };
             (lower, upper)
         } else {
-            let lower = first_lower * second_lower;
+            let lower = first_lower.saturating_mul(second_lower);
             let upper = match (first_upper, second_upper) {
-                (Some(first_upper), Some(second_upper)) => Some(first_upper * second_upper),
+                (Some(first_upper), Some(second_upper)) =>
+                    first_upper.checked_mul(second_upper),
                 _ => None,
             };
             (lower, upper)
