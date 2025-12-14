@@ -29,6 +29,14 @@ where I: Iterator, I::Item: Default {
     }
 }
 
+impl<I> Accumulate<I>
+where I: Iterator, I::Item: Clone {
+    #[inline]
+    pub fn value(&self) -> I::Item {
+        self.value.clone()
+    }
+}
+
 impl<I> Iterator for Accumulate<I>
 where I: Iterator, I::Item: Add<Output = I::Item>, I::Item: Clone {
     type Item = I::Item;

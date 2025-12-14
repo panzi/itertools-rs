@@ -31,6 +31,7 @@ impl<I> Iterator for Pairwise<I>
 where I: Iterator, I::Item: Clone {
     type Item = (I::Item, I::Item);
 
+    #[inline]
     fn size_hint(&self) -> (usize, Option<usize>) {
         if self.item.is_none() {
             return (0, Some(0));
@@ -39,6 +40,7 @@ where I: Iterator, I::Item: Clone {
         self.iter.size_hint()
     }
 
+    #[inline]
     fn count(self) -> usize {
         if self.item.is_none() {
             return 0;

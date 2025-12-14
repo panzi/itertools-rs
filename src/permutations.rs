@@ -20,18 +20,102 @@ impl<'a, T> Permutations<'a, T> {
     }
 }
 
+#[cfg(target_pointer_width = "16")]
+#[inline]
+fn factorial_usize(n: usize) -> Option<usize> {
+    match n {
+        0 => Some(1),
+        1 => Some(1),
+        2 => Some(2),
+        3 => Some(6),
+        4 => Some(24),
+        5 => Some(120),
+        6 => Some(720),
+        7 => Some(5040),
+        8 => Some(40320),
+        _ => None
+    }
+}
+
+#[cfg(target_pointer_width = "32")]
+#[inline]
+fn factorial_usize(n: usize) -> Option<usize> {
+    match n {
+        0 => Some(1),
+        1 => Some(1),
+        2 => Some(2),
+        3 => Some(6),
+        4 => Some(24),
+        5 => Some(120),
+        6 => Some(720),
+        7 => Some(5040),
+        8 => Some(40320),
+        9 => Some(362880),
+        10 => Some(3628800),
+        11 => Some(39916800),
+        12 => Some(479001600),
+        _ => None
+    }
+}
+
+#[cfg(target_pointer_width = "64")]
+#[inline]
+fn factorial_usize(n: usize) -> Option<usize> {
+    match n {
+        0 => Some(1),
+        1 => Some(1),
+        2 => Some(2),
+        3 => Some(6),
+        4 => Some(24),
+        5 => Some(120),
+        6 => Some(720),
+        7 => Some(5040),
+        8 => Some(40320),
+        9 => Some(362880),
+        10 => Some(3628800),
+        11 => Some(39916800),
+        12 => Some(479001600),
+        13 => Some(6227020800),
+        14 => Some(87178291200),
+        15 => Some(1307674368000),
+        16 => Some(20922789888000),
+        17 => Some(355687428096000),
+        18 => Some(6402373705728000),
+        19 => Some(121645100408832000),
+        20 => Some(2432902008176640000),
+        _ => None
+    }
+}
+
+#[cfg(not(any(target_pointer_width = "16", target_pointer_width = "32", target_pointer_width = "64")))]
+#[inline]
+fn factorial_usize(n: usize) -> Option<usize> {
+    let mut res = 1usize;
+    for i in 1..=n {
+        res = res.checked_mul(i)?;
+    }
+
+    Some(res)
+}
+
 impl<'a, T> Iterator for Permutations<'a, T> {
     type Item = Vec<&'a T>;
 
+    #[inline]
     fn size_hint(&self) -> (usize, Option<usize>) {
-        let size: usize = (1..=self.data.len()).product();
-        let remaining = size - self.count;
-
-        (remaining, Some(remaining))
+        let size = factorial_usize(self.data.len());
+        match size {
+            Some(size) => {
+                let remaining = size - self.count;
+                (remaining, Some(remaining))
+            }
+            None => (usize::MAX, None)
+        }
     }
 
+    #[inline]
     fn count(self) -> usize {
-        let size: usize = (1..=self.data.len()).product();
+        let size = factorial_usize(self.data.len()).expect("usize overflow");
         size - self.count
     }
 
